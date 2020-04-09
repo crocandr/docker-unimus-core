@@ -7,7 +7,7 @@ services:
       # unimus server address
       - UNIMUS_SERVER_ADDRESS=192.168.72.133
       - UNIMUS_SERVER_PORT=8085
-      - UNIMUS_SERVER_ACCESS_KEY=iD@7DQL4fuu<w*&Cl,onHx:G.cbWwfJ?--sQzp0+bA7pGLiwEGONVGlw==!u/BQKdLm4tFfWlAq/dxLzioB1drnKoku23YRt5rGioq3+UPJhmxi6x4VRxRRj/QGVm9YLpdlMnJPQeQtFQd+vzu3qnl+V9veBOtvVe0clfHJfgNXimS+mJz3CZ2L4KWRNRtXTFUd8GJ/ox6s5theFCwM9PxUrZ91MLnJIEB8iVEP8bMWT8HstjhlB11+BFboxq7a9uG6UFo9IWuSyQRGAz8ohXiAxHMKLkdI6R7P/vlulKPf+v4G9oRwJM1cR/CBYgA4ZJnmDGxUm/f/QRN5an70qz1EijwO9lnoK4d90MYxRg3Qp+t9/XqNi+wbRu1p
+      - UNIMUS_SERVER_ACCESS_KEY=i...........................................................................p
       # base memory params for java
       - XMX=1024M
       - XMS=256M
