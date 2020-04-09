@@ -1,54 +1,32 @@
-# Unimus in Docker
+# Unimus Core in Docker
 
 Unimus is a multi-vendor network device configuration backup and management solution, designed from the ground up with user friendliness, workflow optimization and ease-of-use in mind.
 
   - https://unimus.net/
   - https://wiki.unimus.net/display/UNPUB/Running+in+Docker
+  - https://wiki.unimus.net/display/UNPUB/Architecture+overview
+  - https://wiki.unimus.net/display/UNPUB/Zones
 
 ## Build
 
 ```
-docker build -t croc/unimus .
+docker build -t croc/unimus-core .
 ```
+
+## Configuration
+
+Check the docker-compose file for available options.
+
+  - `UNIMUS_SERVER_ADDRESS=192.168.72.133` - the IP address or DNS name of the unimus server
+  - `UNIMUS_SERVER_PORT=8085` - the port of the unimus server
+  - `UNIMUS_SERVER_ACCESS_KEY=i............................E` - a very-very-very long string, this is the access token that you can copy from the Zone menu of Unimus Server Web under the "Remote core access key" option 
 
 ## Run
 
-You've to have a DB for the Unimus.
-You can use HSQL (local - file-based) or MySQL (with an other container) for the backend DB.
-
-### with HSQL
-
-```
-docker run -tid --name=unimus -p 8085:8085 -v /srv/unimus/config:/etc/unimus/ -v /srv/unimus/db:/var/unimus/hsql croc/unimus
-```
-
-### with MySQL
-
-Start your MySQL container for Unimus:
-
-```
-docker run -tid --name=unimus-db -v /srv/unimus/db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=supersecret -e MYSQL_DATABASE=unimus -e MYSQL_USER=unimus -e MYSQL_PASSWORD=secret mariadb
-```
-
-Start your Unimus:
-
-```
-docker run -tid --name=unimus -p 8085:8085 -v /srv/unimus/config:/etc/unimus/ --link=unimus-db:db croc/unimus
-```
-
-You have to use these parameters with Unimus' MySQL config:
-  - db host: `db` (if you've started with docker-compose, use the name of the database container `unimus-db`)
-  - db: `unimus`
-  - db user: `unimus`
-  - db pass: `secret`
-
-Good for a test, but not too secure.
-
 ## Docker compose
 
-I've written a `docker-compose.yml` file for easier start with the database.
+You should use the docker compose file for easier start.
 
-Start:
 ```
 docker-compose up -d
 ```
@@ -57,35 +35,3 @@ docker-compose up -d
 
 
 Check the docker-compose file for extra parameters!
-
-
-### Specify a version
-
-How to use a specified version with docker-compose file? <br />
-Add the version tag to the unimus image line. <br />
-Example:
-```
-image: croc/unimus:v1.7.0
-```
-
-Sorry, you can't build an image with an older unimus version, because I don't know the download URL for an older version. So I've built the docker image for the latest binary when it was an older version. <br />
-I recommend use the latest version, always.
-
-## Usage
-
-Default Unimus' URL is http://< your docker host>:8085 , example: http://192.168.56.103:8085
-
-You have to configure your Unimus after the first start on this URL.
-
-You have to register on https://unimus.net/ for license keys.
-
-## Update
-
-If you want to update unimus with this "stack".
-  - stop all containers ( example: `docker stop unimus unimus-db` or `docker-compose stop` )
-  - remove all containers ( example: `docker rm -v unimus unimus-db` or `docker-compose rm -v -f` )
-  - pull new images ( example: `docker pull croc/unimus` and `docker pull mariadb` or remove images to pull new `docker rmi croc/unimus mariadb` )
-  - start the stack again 
-
-
-Good luck!

@@ -1,25 +1,13 @@
 version: "3"
 
 services:
-#  db:
-#    image: mariadb
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=supersecret
-#      - MYSQL_DATABASE=unimus
-#      - MYSQL_USER=unimus
-#      - MYSQL_PASSWORD=secret
-#      #- TZ=Europe/Budapest
-#    volumes:
-#      - './db:/var/lib/mysql'
-#      - '/etc/localtime:/etc/localtime:ro'
-#    restart: unless-stopped
   unimus-core:
     image: croc/unimus-core
     environment:
       # unimus server address
-      - UNIMUS_SERVER_ADDRESS=172.17.0.1
+      - UNIMUS_SERVER_ADDRESS=192.168.72.133
       - UNIMUS_SERVER_PORT=8085
-      - UNIMUS_SERVER_ACCESS_KEY=secretsecret
+      - UNIMUS_SERVER_ACCESS_KEY=iD@7DQL4fuu<w*&Cl,onHx:G.cbWwfJ?--sQzp0+bA7pGLiwEGONVGlw==!u/BQKdLm4tFfWlAq/dxLzioB1drnKoku23YRt5rGioq3+UPJhmxi6x4VRxRRj/QGVm9YLpdlMnJPQeQtFQd+vzu3qnl+V9veBOtvVe0clfHJfgNXimS+mJz3CZ2L4KWRNRtXTFUd8GJ/ox6s5theFCwM9PxUrZ91MLnJIEB8iVEP8bMWT8HstjhlB11+BFboxq7a9uG6UFo9IWuSyQRGAz8ohXiAxHMKLkdI6R7P/vlulKPf+v4G9oRwJM1cR/CBYgA4ZJnmDGxUm/f/QRN5an70qz1EijwO9lnoK4d90MYxRg3Qp+t9/XqNi+wbRu1p
       # base memory params for java
       - XMX=1024M
       - XMS=256M
@@ -28,9 +16,5 @@ services:
       - TZ=Europe/Budapest
     volumes:
       - './config:/etc/unimus-core'
-      #- '/etc/localtime:/etc/localtime:ro'
-#    depends_on:
-#      - db
-#    ports:
-#      - '8085:8085'
+      - '/etc/localtime:/etc/localtime:ro'
     restart: unless-stopped
