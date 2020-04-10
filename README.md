@@ -18,7 +18,7 @@ docker build -t croc/unimus-core .
 Check the docker-compose file for available options.
 
   - `UNIMUS_SERVER_ADDRESS=192.168.72.133` - the IP address or DNS name of the unimus server
-  - `UNIMUS_SERVER_PORT=8085` - the port of the unimus server
+  - `UNIMUS_SERVER_PORT=5509` - the core connection port of the unimus server
   - `UNIMUS_SERVER_ACCESS_KEY=i............................E` - a very-very-very long string, this is the access token that you can copy from the Zone menu of Unimus Server Web under the "Remote core access key" option 
 
 ## Run

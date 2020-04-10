@@ -6,7 +6,7 @@ services:
     environment:
       # unimus server address
       - UNIMUS_SERVER_ADDRESS=192.168.72.133
-      - UNIMUS_SERVER_PORT=8085
+      - UNIMUS_SERVER_PORT=5509
       - UNIMUS_SERVER_ACCESS_KEY=i...........................................................................p
       # base memory params for java
       - XMX=1024M
