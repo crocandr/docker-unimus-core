@@ -2,14 +2,18 @@
 
 JAVA_EXTRA_PARAMS=""
 
-CONFIG_FILE="/etc/unimus-core/unimus-core.properties"
+CONFIG_DIR="/etc/unimus-core"
+CONFIG_FILE="${CONFIG_DIR}/unimus-core.properties"
+
+# create conf dir
+[ ! -d "$CONFIG_DIR" ] && { mkdir -p $CONFIG_DIR; }
 
 # default value of unimus server port
 [ -z "$UNIMUS_SERVER_ADDRESS" ] && { UNIMUS_SERVER_ADDRESS=172.17.0.1; }
 [ -z "$UNIMUS_SERVER_PORT" ] && { UNIMUS_SERVER_PORT=8085; }
 [ -z "$UNIMUS_SERVER_ACCESS_KEY" ] && { UNIMUS_SERVER_ACCESS_KEY="NOT_A_VALID_ACCESS_KEY"; }
 
-[ ! -z "$XMS" ] &&  { JAVA_EXTRA_PARAMS="$JAVA_EXTRA_PARAMS -Xms$XMS"; }
+[ ! -z "$XMS" ] && { JAVA_EXTRA_PARAMS="$JAVA_EXTRA_PARAMS -Xms$XMS"; }
 [ ! -z "$XMX" ] && { JAVA_EXTRA_PARAMS="$JAVA_EXTRA_PARAMS -Xmx$XMX"; }
 [ ! -z "$JAVA_OPTS" ] && { JAVA_EXTRA_PARAMS="$JAVA_OPTS"; }
 
