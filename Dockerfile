@@ -9,7 +9,6 @@ RUN apt-get install -y openjdk-11-jre-headless
 #
 # Unimus 
 RUN curl -L -o /opt/unimus-core.jar $DOWNLOAD_URL
-RUN jarsigner -verify /opt/unimus-core.jar | grep 'jar verified'
 #
 # Start script
 COPY files/start.sh /opt/start.sh
