@@ -10,12 +10,14 @@ RUN curl -L -o /opt/unimus-core.jar $DOWNLOAD_URL
 
 # JDK install and check
 RUN apt-get install -y openjdk-11-jdk-headless && \
-    jarsigner -verify /opt/unimus-core.jar | grep -i "jar verified" || { echo "Unimus binary is not verified"; exit 1; } && \
+    jarsigner -verify /opt/unimus-core.jar | grep -i "jar verified" || { echo "Unimus Core binary is not verified"; exit 1; } && \
     apt-get purge -y openjdk-11-jdk-headless
 # JRE install
 RUN apt-get install -y openjdk-11-jre-headless
 
 #
+VOLUME /etc/unimus-core
+
 # Start script
 COPY files/start.sh /opt/start.sh
 RUN chmod 755 /opt/start.sh

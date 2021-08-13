@@ -16,7 +16,11 @@ CONFIG_FILE="/etc/unimus-core/unimus-core.properties"
 [ -z "$TZ" ] && { TZ="UTC"; }
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-[ ! -f $CONFIG_FILE ] && { touch $CONFIG_FILE; }
+if [ ! -f $CONFIG_FILE ]
+then
+  mkdir -p $( dirname $CONFIG_FILE )
+  touch $CONFIG_FILE
+fi
 
 [ $( grep -i "unimus.address=" $CONFIG_FILE | wc -l ) -eq 0 ] && { echo "unimus.address=" >> $CONFIG_FILE; }
 [ ! -z $UNIMUS_SERVER_ADDRESS ] && { echo "Updating unimus.address in config ..."; sed -i s@unimus.address=.*@unimus.address=$UNIMUS_SERVER_ADDRESS@g $CONFIG_FILE; }
