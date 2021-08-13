@@ -36,7 +36,7 @@ echo "unimus.access.key=$UNIMUS_SERVER_ACCESS_KEY" >> $CONFIG_FILE
 # verify jar
 if [ $( which jarsigner | wc -l ) -gt 0 ]
 then
-  jarsigner -verify /opt/unimus-core.jar | grep -i "jar verified" || { echo "Unimus binary is not verified"; exit 1; }
+  jarsigner -verify /opt/unimus-core.jar | grep -i "jar verified" || { echo "Unimus Core binary is not verified"; exit 1; }
 fi
 
 # run
