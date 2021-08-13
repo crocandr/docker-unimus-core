@@ -16,19 +16,24 @@ CONFIG_FILE="/etc/unimus-core/unimus-core.properties"
 [ -z "$TZ" ] && { TZ="UTC"; }
 ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-
 [ ! -f $CONFIG_FILE ] && { touch $CONFIG_FILE; }
 
 [ $( grep -i "unimus.address=" $CONFIG_FILE | wc -l ) -eq 0 ] && { echo "unimus.address=" >> $CONFIG_FILE; }
 [ ! -z $UNIMUS_SERVER_ADDRESS ] && { echo "Updating unimus.address in config ..."; sed -i s@unimus.address=.*@unimus.address=$UNIMUS_SERVER_ADDRESS@g $CONFIG_FILE; }
 
-[ $( grep -i "unimus.port=" $CONFIG_FILE | wc -l ) -eq 0 ] && { echo "unimus.port=" >> $CONFIG_FILE; } 
+[ $( grep -i "unimus.port=" $CONFIG_FILE | wc -l ) -eq 0 ] && { echo "unimus.port=" >> $CONFIG_FILE; }
 [ ! -z $UNIMUS_SERVER_PORT ] && { echo "Updating unimus port in config..."; sed -i s@unimus.port=.*@unimus.port=$UNIMUS_SERVER_PORT@g $CONFIG_FILE; }
 
 # remove multiple config lines
 sed '/unimus.access.key/d' $CONFIG_FILE
 #[ ! -z $UNIMUS_SERVER_ACCESS_KEY ] && { echo "Updating access key in config..."; sed -i s@unimus.access.key=.*@unimus.access.key=$UNIMUS_SERVER_ACCESS_KEY@g $CONFIG_FILE; }
 echo "unimus.access.key=$UNIMUS_SERVER_ACCESS_KEY" >> $CONFIG_FILE
+
+# verify jar
+if [ $( which jarsigner | wc -l ) -gt 0 ]
+then
+  jarsigner -verify /opt/unimus-core.jar | grep -i "jar verified" || { echo "Unimus binary is not verified"; exit 1; }
+fi
 
 # run
 java $JAVA_EXTRA_PARAMS -jar /opt/unimus-core.jar
