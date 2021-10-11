@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 ENV DOWNLOAD_URL https://download.unimus.net/unimus-core-dev/Unimus-Core.jar
 
