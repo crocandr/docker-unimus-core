@@ -25,6 +25,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          ref: dev
       - name: build image - AMD64
         run: |
           docker build --rm -t croc/unimus-core . || { echo "docker image build failed - amd64"; exit 1; }
@@ -51,6 +53,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          ref: dev
       # buildx with quemu
       - name: qemu setup for buildx for arm build
         uses: docker/setup-qemu-action@v2
