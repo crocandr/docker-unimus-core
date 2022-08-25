@@ -104,10 +104,10 @@ jobs:
       - run:
           name: check image and get version
           command: |
-            docker-compose up -d
+            docker run -tid --name unimus-core $IMAGE_NAME || { echo "run failed"; exit 1; }
             echo "waiting for up ..."
             sleep 5
-            UNIMUS_CORE_VERSION=$( docker-compose logs unimus-core | awk -F ':' '/version/{ print $5 }' | awk '{ print $2 }' | tail -n1 )
+            UNIMUS_CORE_VERSION=$( docker logs unimus-core | awk -F ':' '/version/{ print $5 }' | awk '{ print $2 }' | tail -n1 )
             echo "Unimus core version: $UNIMUS_CORE_VERSION"
             [ -z "$UNIMUS_CORE_VERSION" ] && { echo "Unimus core version not found"; exit 1; }
             # create version tag
@@ -130,9 +130,9 @@ workflows:
   myflow:
     jobs:
       - jarsigner-job
-      - containerbuilder-amd64-job:
-          requires:
-            - jarsigner-job
+#      - containerbuilder-amd64-job:
+#          requires:
+#            - jarsigner-job
       - containerbuilder-arm-job:
           requires:
             - jarsigner-job
