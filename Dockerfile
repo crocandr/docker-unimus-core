@@ -5,7 +5,7 @@ ENV DOWNLOAD_URL https://download.unimus.net/unimus-core/-%20Latest/Unimus-Core.
 RUN apt-get update && apt-get install -y curl less wget tzdata
 
 # copy all files into the container image
-COPY files/* /opt/start.sh
+COPY files/* /opt/
 
 # Unimus binary download
 RUN curl -L -o /opt/unimus-core.jar $DOWNLOAD_URL
