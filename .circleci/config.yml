@@ -130,9 +130,9 @@ workflows:
   myflow:
     jobs:
       - jarsigner-job
-#      - containerbuilder-amd64-job:
-#          requires:
-#            - jarsigner-job
+      - containerbuilder-amd64-job:
+          requires:
+            - jarsigner-job
       - containerbuilder-arm-job:
           requires:
             - jarsigner-job
