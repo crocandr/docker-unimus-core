@@ -45,7 +45,7 @@ jobs:
           name: docker login
           command: |
             echo $DOCKERHUB_PASS | docker login --username $DOCKERHUB_USER --password-stdin
-            echo $QUAYIO_PASS | docker login --username $QUAYIO_USER --password-stdin
+            echo $QUAYIO_PASS | docker login --username $QUAYIO_USER --password-stdin quay.io
       - run:
           name: docker build arm64
           command: |
@@ -76,7 +76,7 @@ jobs:
           name: docker login
           command: |
             echo $DOCKERHUB_PASS | docker login --username $DOCKERHUB_USER --password-stdin
-            echo $QUAYIO_PASS | docker login --username $QUAYIO_USER --password-stdin
+            echo $QUAYIO_PASS | docker login --username $QUAYIO_USER --password-stdin quay.io
       - run:
           name: docker build arm64
           command: |
