@@ -18,8 +18,31 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  jarsigner:
+    runs-on: openjdk:slim
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: dev
+      - name: check java signing
+        run: |
+          JAVA_ARTIFACT_URL=$( grep -i "ENV.*DOWNLOAD_URL" Dockerfile | awk '{ print $3 }' )
+          echo "Artifact url: $JAVA_ARTIFACT_URL"
+          #FILENAME=$( basename $JAVA_ARTIFACT_URL )
+          FILENAME="unimus-core.jar"
+          echo "Filename $FILENAME"
+          curl -k -L -o "$FILENAME" "$JAVA_ARTIFACT_URL" || { echo "Download error"; exit 1; }
+          ls -hal $FILENAME
+          jarsigner -verify $FILENAME | grep -i "jar verified" || { echo "Java binary is not verified"; exit 1; }
+          echo "Checksum: "
+          sha1sum $FILENAME | tee checksum.signed
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: checksum
+          path: checksum.signed
   build-amd64:
+    needs: jarsigner
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -28,8 +51,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: dev
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: checksum
       - name: build image - AMD64
         run: |
+          cp -f checksum.signed files || { echo "Checksum file not found"; exit 1; }
           docker build --rm -t croc/unimus-core . || { echo "docker image build failed - amd64"; exit 1; }
           docker tag croc/unimus-core croc/unimus-core:dev
           docker tag croc/unimus-core quay.io/croc/unimus-core:dev
@@ -48,6 +76,7 @@ jobs:
           docker push croc/unimus-core:dev
           docker push quay.io/croc/unimus-core:dev
   build-arm64:
+    needs: jarsigner
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -56,6 +85,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: dev
+      - name: download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: checksum
       # buildx with quemu
       - name: qemu setup for buildx for arm build
         uses: docker/setup-qemu-action@v2
@@ -68,6 +101,7 @@ jobs:
         run: |
           echo "Buildx supported platforms: ${{ steps.buildx.outputs.platforms }}"
 
+          cp -f checksum.signed files || { echo "Checksum file not found"; exit 1; }
           docker build --rm --platform linux/arm64 -t croc/unimus-core-arm64 . || { echo "docker image build failed - arm64"; exit 1; }
           docker tag croc/unimus-core-arm64 croc/unimus-core-arm64:dev
           docker tag croc/unimus-core-arm64 quay.io/croc/unimus-core-arm64:dev
