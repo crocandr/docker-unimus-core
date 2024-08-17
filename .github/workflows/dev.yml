@@ -19,7 +19,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build-amd64:
-    needs: jarsigner
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -50,7 +49,6 @@ jobs:
           docker push croc/unimus-core:dev
           docker push quay.io/croc/unimus-core:dev
   build-arm64:
-    needs: jarsigner
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
