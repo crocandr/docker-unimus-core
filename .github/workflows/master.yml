@@ -95,7 +95,6 @@ jobs:
           ARCH: ARM
         run: |
           echo "Buildx supported platforms: ${{ steps.buildx.outputs.platforms }}"
-          cp -f checksum.signed files || { echo "Checksum file not found"; exit 1; }
           docker build --rm --platform linux/arm64 -t croc/unimus-core-arm64 . || { echo "docker image build failed - arm64"; exit 1; }
           docker tag croc/unimus-core-arm64 croc/unimus-core-arm64
           docker tag croc/unimus-core-arm64 quay.io/croc/unimus-core-arm64
